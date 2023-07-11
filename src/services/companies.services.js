@@ -35,24 +35,6 @@ async function createCompany (payload) {
 async function createAdmin (payload) {
 
 
-    // const foundEmail = await staff.findOne({email: payload.email});
-    // if(foundEmail) {
-    //     return {
-    //         message: "Staff email already registered",
-    //         statusCode: 400,
-    //         status: "failure"
-    //     }
-    // }
-    
-    // const foundPhone = await staff.findOne({phone: payload.phone});
-    // if(foundPhone) {
-    //     return {
-    //         message: "Staff phone already registered",
-    //         statusCode: 400,
-    //         status: "failure"
-    //     }
-    // }
-
     const foundEmailOrPhone = await Staff.findOne({$or: [
       {email: payload.email}, 
       {phone: payload.phone}
@@ -144,11 +126,20 @@ const login = async (payload) => {
     }
 }
 
+async function getAllCompanies() {
+  try {
+    const companies = await Company.find();
+    return responses.buildSuccessResponse('Successfully fetched all companies', 200, companies);
+  } catch (error) {
+    return responses.buildFailureResponse('Failed to fetch companies', 500);
+  }
+}
 
 
 module.exports = {
     createCompany,
     createAdmin,
     login,
-    createStaff
+    createStaff,
+    getAllCompanies
 }

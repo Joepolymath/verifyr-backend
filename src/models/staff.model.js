@@ -61,14 +61,3 @@ const staffSchema = mongoose.Schema({
 
 module.exports = mongoose.model("Staff", staffSchema)
 
-/*const staffSchema = {
-    firstName: "string",
-    lastName: "string",
-    phone: "string",
-    email: "string",
-    employeeId: "string",
-    companyRole: "string",
-    dateOfBirth: "date",
-    company: "string",
-    createdAt: "date",
-}*/
