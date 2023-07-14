@@ -51,6 +51,9 @@ const staffSchema = mongoose.Schema({
 
     password: {
         type: String
+    },
+    resetPin: {
+        type: Number
     }
 
     

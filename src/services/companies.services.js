@@ -2,7 +2,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Company = require("../models/company.model")
 const Staff = require('../models/staff.model');
-const responses = require("../utils/response")
+const responses = require("../utils/response");
+const generateResetPin = require('../utils/generateResetPin');
+const sendMail = require("../utils/sendMail")
 
 async function createCompany (payload) {
     /**
@@ -33,8 +35,7 @@ async function createCompany (payload) {
 }
 
 async function createAdmin (payload) {
-
-
+    
     const foundEmailOrPhone = await Staff.findOne({$or: [
       {email: payload.email}, 
       {phone: payload.phone}
@@ -135,11 +136,36 @@ async function getAllCompanies() {
   }
 }
 
+const verifyUser = async (payload)=>{
+    const {user} = payload
+}
+
+const forgotPassword = async (payload)=> {
+    /**
+     * Check or verify email address
+     * Generate reset pin
+     * Update the user with the reset pin (add reset pin to user document)
+     * Send reset pin to user email
+     * */
+     
+    const emailFound = await Staff.findOne({email: payload.email})
+    if(!emailFound) {
+        return responses.buildFailureResponse("Email not found", 400)
+    }
+    const resetPin = generateResetPin()
+    const updatedUser = await Staff.findByIdAndUpdate({_id: emailFound._id}, {resetPin: resetPin}, {new: true})
+    
+    await sendMail(updatedUser.contactEmail)
+    return responses.buildSuccessResponse("Forgot Password Successful", 200, updatedUser)
+}
+
+
 
 module.exports = {
     createCompany,
     createAdmin,
     login,
     createStaff,
-    getAllCompanies
+    getAllCompanies,
+    forgotPassword
 }

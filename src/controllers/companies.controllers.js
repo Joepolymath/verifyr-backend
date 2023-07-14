@@ -29,7 +29,13 @@ const getAllCompanies = async (req, res) => {
     res.status(data.statusCode).json(data);
  
 };
+//get companies function
+const forgotPassword = async (req, res) => {
+    const data = await companyServices.forgotPassword(req.body);
+    res.status(data.statusCode).json(data);
+ 
+};
 
 
 
-module.exports = { createAccount, createAdmin, login, createStaff, getAllCompanies };
+module.exports = { createAccount, createAdmin, login, createStaff, getAllCompanies, forgotPassword };

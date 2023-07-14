@@ -11,6 +11,7 @@ router.post('/create-admin', authMiddleware.authenticate, companyController.crea
 router.post('/create-staff', authMiddleware.authenticate, companyController.createStaff);
 router.post('/login', companyController.login);
 router.get('/', companyController.getAllCompanies);
+router.post('/forgot-password', companyController.forgotPassword);
 
 
 module.exports = router;
