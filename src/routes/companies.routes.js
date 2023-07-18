@@ -9,7 +9,7 @@ router.post('/create-account', companyController.createAccount);
 
 router.post(
   '/create-admin',
-  authMiddleware.authenticate,
+  //   authMiddleware.authenticate,
   companyController.createAdmin
 );
 router.post(
