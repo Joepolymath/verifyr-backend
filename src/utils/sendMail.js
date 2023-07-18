@@ -1,10 +1,10 @@
-const dotenv= require("dotenv")
-const sgMail = require('@sendgrid/mail')
+const dotenv = require('dotenv');
+const sgMail = require('@sendgrid/mail');
 dotenv.config();
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-
-const textMail = `<!DOCTYPE html>
+const sendForgotPasswordMail = (mailPayload) => {
+  const textMail = `<!DOCTYPE html>
 <html>
 <head>
   <style>
@@ -42,30 +42,30 @@ const textMail = `<!DOCTYPE html>
 </head>
 <body>
   <div class="container">
-    <h1>Reset Your Password</h1>
-    <p>Please click the button below to reset your password:</p>
-    <a class="button" href="{{ resetUrl }}">Reset Password</a>
+    <h1>Forgot Password</h1>
+    <p>Your Password Reset Pin is ${mailPayload.pin}</p>
+    <a class="button" href="#">Reset Password</a>
   </div>
 </body>
 </html>
-`
-
-const sendMail = ()=>{
-const msg = {
-  to: 'annabeladaeze@gmail.com', // Change to your recipient
-  from: 'joshuatobiajagbe@gmail.com', // Change to your verified sender
-  subject: 'Reset Password link',
-  text: 'Click on the link below to reset your password',
-  html: textMail,
-}
-sgMail
-  .send(msg)
-  .then((response) => {
-    console.log(response[0].statusCode)
-    console.log(response[0].headers)
-  })
-  .catch((error) => {
-    console.error(error)
-  })
-}
-module.exports = sendMail;
+`;
+  const msg = {
+    to: mailPayload.to, // Change to your recipient
+    from: 'joshuatobiajagbe@gmail.com', // Change to your verified sender
+    subject: mailPayload.subject,
+    // text: 'Click on the link below to reset your password',
+    html: textMail,
+  };
+  sgMail
+    .send(msg)
+    .then((response) => {
+      console.log(response[0].statusCode);
+      console.log(response[0].headers);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+module.exports = {
+  sendForgotPasswordMail,
+};
