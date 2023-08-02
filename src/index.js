@@ -24,6 +24,7 @@ app.use(express.json());
 app.use(morgan('combined'));
 app.use(limiter);
 app.use('/companies', companiesRouter);
+app.use('/payments', require('./routes/payments.routes'));
 
 app.get('/', (req, res) => {
   res.status(200).json({
