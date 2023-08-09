@@ -5,6 +5,7 @@ const morgan = require('morgan');
 
 const companiesRouter = require('./routes/companies.routes');
 const connectDB = require('./configs/database');
+const job = require('./utils/scheduler');
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ const limiter = rateLimit({
 
 // connecting to db here
 connectDB(process.env.MONGO_URI);
+job.start();
 
 app.use(express.json());
 app.use(morgan('combined'));
