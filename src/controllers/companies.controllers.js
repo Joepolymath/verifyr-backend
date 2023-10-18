@@ -32,7 +32,7 @@ const login = async (req, res) => {
 
 //get companies function
 const getAllCompanies = async (req, res) => {
-  const data = await companyServices.getAllCompanies();
+  const data = await companyServices.getAllCompanies(req.query);
   res.status(data.statusCode).json(data);
 };
 //get companies function

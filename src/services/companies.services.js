@@ -149,13 +149,33 @@ const login = async (payload) => {
   }
 };
 
-async function getAllCompanies() {
+async function getAllCompanies(query = {}) {
   try {
-    const companies = await Company.find();
+    const paginate = {
+      skip: 0,
+      limit: 10,
+    };
+    if (query.skip && query.limit) {
+      paginate.skip = query.skip;
+      paginate.limit = query.limit;
+
+      delete query.skip;
+      delete query.limit;
+    }
+    console.log({ query });
+    const companies = await Company.find(query)
+      .skip(paginate.skip)
+      .limit(paginate.limit);
+    const totalCounts = await Company.countDocuments(query);
     return responses.buildSuccessResponse(
       'Successfully fetched all companies',
       200,
-      companies
+      {
+        data: companies,
+        page: Number(paginate.skip) + 1,
+        noPerPage: Number(paginate.limit),
+        totalCounts,
+      }
     );
   } catch (error) {
     return responses.buildFailureResponse('Failed to fetch companies', 500);
